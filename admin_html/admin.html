@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Quản lý truyện</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../admin_css/styles.css">
 </head>
 <body>
     <div class="sidebar">
@@ -71,6 +71,12 @@
                 </div>
             </section>
             <section id="quanlytruyen" class="section hidden">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên truyện, số chương, danh mục">
+                    <button id="searchButton">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -137,6 +143,25 @@
                     </tbody>
                 </table>
             </section>
+            <!-- Phần quản lý thành viên -->
+            <section id="thanhvien" class="section hidden">
+                <h2>Danh sách thành viên</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên thành viên</th>
+                            <th>Giới tính</th>
+                            <th>Độ tuổi</th>
+                            <th>Ngày đăng ký</th>
+                            <th>Số lượt truyện truy cập</th>
+                            <th>Nội dung yêu thích</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTableBody">
+                        <!-- Dữ liệu thành viên sẽ được thêm vào đây -->
+                    </tbody>
+                </table>
+            </section>
         </main>
     </div>
      <!-- Modal chỉnh sửa -->
@@ -161,8 +186,9 @@
             </form>
         </div>
     </div> -->
-    <script src="js/code.js"></script>
-    <script src="js/codequanlytruyen.js"></script>
-    <script src="js/codethongke.js"></script>
+    <script src="../admin_js/code.js"></script>
+    <script src="../admin_js/codequanlytruyen.js"></script>
+    <script src="../admin_js/codethongke.js"></script>
+    <script src="../admin_js/codethanhvien.js"></script>
 </body>
 </html>

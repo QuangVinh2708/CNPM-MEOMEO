@@ -206,6 +206,43 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Container của tìm kiếm */
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Ô tìm kiếm */
+#searchInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Nút tìm kiếm */
+#searchButton {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+#searchButton i {
+    font-size: 16px;
+}
+
+/* Thay đổi màu nền khi hover */
+#searchButton:hover {
+    background-color: #555;
+}
 
 
 /* Modal (nếu cần) */

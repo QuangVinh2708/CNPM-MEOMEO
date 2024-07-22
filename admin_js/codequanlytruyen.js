@@ -1,14 +1,13 @@
 class HangTruyen {
     constructor(hinhAnh, tenTruyen, danhMuc, soChuong, noiBat, hienThi) {
-        this.hinhAnh = hinhAnh; // Đường dẫn hình ảnh
-        this.tenTruyen = tenTruyen; // Tên truyện
-        this.danhMuc = danhMuc; // Danh mục truyện
-        this.soChuong = soChuong; // Số chương
-        this.noiBat = noiBat; // Nổi bật hay không
-        this.hienThi = hienThi; // Hiển thị hay không
+        this.hinhAnh = hinhAnh;
+        this.tenTruyen = tenTruyen;
+        this.danhMuc = danhMuc;
+        this.soChuong = soChuong;
+        this.noiBat = noiBat;
+        this.hienThi = hienThi;
     }
 
-    // Tạo nút với biểu tượng và tiêu đề
     taoNut(iconClass, tieuDe) {
         const nut = document.createElement('button');
         nut.className = `${iconClass}-btn`;
@@ -19,7 +18,6 @@ class HangTruyen {
         return nut;
     }
 
-    // Tạo một hàng trong bảng
     taoHang() {
         const hang = document.createElement('tr');
 
@@ -72,20 +70,18 @@ class HangTruyen {
     }
 }
 
-const soTruyenMoiTrang = 9; // Số lượng truyện mỗi trang
-let trangHienTai = 1; // Trang hiện tại
-let danhSachTruyen = []; // Danh sách truyện
+const soTruyenMoiTrang = 9; 
+let trangHienTai = 1; 
+let danhSachTruyen = []; 
 
-// Hàm cuộn lên đầu trang
 function scrollToTop() {
     document.querySelector('.main-content').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Hàm hiển thị bảng truyện theo trang
-function hienThiBang(trang) {
+function hienThiBang(trang, danhSachTruyenHienTai = danhSachTruyen) {
     const chiSoBatDau = (trang - 1) * soTruyenMoiTrang;
     const chiSoKetThuc = chiSoBatDau + soTruyenMoiTrang;
-    const truyenHienThi = danhSachTruyen.slice(chiSoBatDau, chiSoKetThuc);
+    const truyenHienThi = danhSachTruyenHienTai.slice(chiSoBatDau, chiSoKetThuc);
 
     const bangTruyen = document.getElementById('comicTableBody');
     bangTruyen.innerHTML = '';
@@ -98,13 +94,12 @@ function hienThiBang(trang) {
     scrollToTop();
 }
 
-// Hàm cập nhật thông tin phân trang
 function capNhatPhanTrang() {
     const tongSoTrang = Math.ceil(danhSachTruyen.length / soTruyenMoiTrang);
     const pageInfo = document.getElementById('pageInfo');
     pageInfo.innerHTML = '';
 
-    const soTrangHienThiToiDa = 10; // Số lượng trang hiển thị tối đa
+    const soTrangHienThiToiDa = 10;
 
     let trangBatDau = Math.max(1, trangHienTai - Math.floor(soTrangHienThiToiDa / 2));
     let trangKetThuc = trangBatDau + soTrangHienThiToiDa - 1;
@@ -140,7 +135,6 @@ function capNhatPhanTrang() {
     }
 }
 
-// Hàm thay đổi trang
 function thayDoiTrang(huong) {
     const trangMoi = trangHienTai + huong;
     if (trangMoi >= 1 && trangMoi <= Math.ceil(danhSachTruyen.length / soTruyenMoiTrang)) {
@@ -149,44 +143,54 @@ function thayDoiTrang(huong) {
     }
 }
 
-// Khi tài liệu đã được tải xong
-document.addEventListener('DOMContentLoaded', () => {
-    // fetch('http://localhost:3000/api/comics')  // URL đến API backend của bạn
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 danhSachTruyen = data.map(item => new HangTruyen(
-    //                     item.hinhAnh, 
-    //                     item.tenTruyen, 
-    //                     item.danhMuc, 
-    //                     item.soChuong, 
-    //                     item.noiBat, 
-    //                     item.hienThi
-    //                 ));
-    //                 hienThiBang(trangHienTai);
-    //             });
+// Hàm tìm kiếm truyện
+function searchComics() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    // Lọc danh sách truyện dựa trên từ khóa tìm kiếm
+    const filteredTruyen = danhSachTruyen.filter(truyen => {
+        return truyen.tenTruyen.toLowerCase().includes(searchTerm) ||
+               truyen.soChuong.toString().includes(searchTerm) ||
+               truyen.danhMuc.toLowerCase().includes(searchTerm);
+    });
+    // Hiển thị bảng với danh sách truyện đã lọc
+    hienThiBang(trangHienTai, filteredTruyen);
+}
 
-    // Tạo các đối tượng HangTruyen và thêm vào bảng
+// Xử lý sự kiện tìm kiếm khi nhấn nút tìm kiếm
+document.getElementById('searchButton').addEventListener('click', searchComics);
+
+// Xử lý sự kiện tự động tìm kiếm khi nhập dữ liệu
+document.getElementById('searchInput').addEventListener('input', searchComics);
+
+document.addEventListener('DOMContentLoaded', () => {
     danhSachTruyen = [
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
-        new HangTruyen('image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg', 'Harry Potter và Hòn đá Phù thủy', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Harry Potter và phòng chứa bí mật', 'Dremy', 1, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+        new HangTruyen('../image/thanhguom.png', 'Thanh gươm diệt quỷ', 'Action', 45, true, true),
+    
     ];
 
     hienThiBang(trangHienTai);
