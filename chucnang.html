@@ -1,0 +1,22 @@
+<!-- editModal.html -->
+<div id="chinhsua" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <h2>Chỉnh sửa chương</h2>
+        <form id="editForm">
+            <label for="image">Hình ảnh</label>
+            <input type="file" id="image" name="image">
+
+            <label for="title">Tên truyện</label>
+            <input type="text" id="title" name="title">
+
+            <label for="category">Danh mục</label>
+            <input type="text" id="category" name="category">
+
+            <label for="chapter-number">Số chương</label>
+            <input type="number" id="chapter-number" name="chapter-number">
+
+            <button type="submit">Lưu</button>
+        </form>
+    </div>
+</div>
